@@ -13,4 +13,7 @@ export type Movie = {
 
 export interface MoviesData {
   results: Movie[]
+  page: number
+  total_pages: number
+  total_results: number
 }

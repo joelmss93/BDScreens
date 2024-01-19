@@ -78,3 +78,29 @@ export const MovieInfoContainer = styled.section`
     }
   }
 `
+
+interface AverageProps {
+  average: number
+}
+
+export const Average = styled.div<AverageProps>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+
+  background: ${({ theme, average }) =>
+    average > 7
+      ? theme.colors.green
+      : average > 5
+        ? theme.colors.yellow
+        : theme.colors.primary};
+
+  p {
+  }
+
+  span {
+  }
+`

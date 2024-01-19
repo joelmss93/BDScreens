@@ -8,12 +8,8 @@ import { getMovieBackdrop } from '../../utils/getMovieImage'
 import { getMovieTime } from '../../utils/getMovieTime'
 import { useParams } from 'react-router-dom'
 
-interface Params {
-  id: string
-}
-
 export const MovieInfo: React.FC = () => {
-  const params = useParams()
+  const { id } = useParams()
 
   const {
     data: movieData,
@@ -21,9 +17,9 @@ export const MovieInfo: React.FC = () => {
     isFetching,
     isError,
   } = useQuery<Movie | undefined>(
-    ['movie', params.id],
+    ['movie', id],
     async () => {
-      const { data } = await api.get<Movie>(`/movie/${params.id}`)
+      const { data } = await api.get<Movie>(`/movie/${id}`)
 
       return data
     },

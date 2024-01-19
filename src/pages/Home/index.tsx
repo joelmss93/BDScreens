@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { Container, Movie, MovieList, SeeAllButton } from './styles'
+import { Container, MovieList, SeeAllButton } from './styles'
 import { useQuery } from 'react-query'
 import api from '../../service/api'
 import { MoviesData } from '../../types'
@@ -8,10 +8,9 @@ import { SearchContext } from '../../contexts/search'
 import Banner from '../../components/Banner'
 import { ArrowRight } from 'phosphor-react'
 import { useNavigate } from 'react-router-dom'
-import { getMovieImage } from '../../utils/getMovieImage'
 import { Loading } from '../../components/Loading'
-import noImage from '../../assets/no-image.png'
 import { ErrorMessage } from '../../components/Error'
+import { Movie } from '../../components/Movie'
 
 export const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -86,10 +85,6 @@ export const Home: React.FC = () => {
     },
   )
 
-  const handleSelectTitle = (id: number) => {
-    navigate(`/movie/${id}`)
-  }
-
   return (
     <Container>
       <Banner />
@@ -108,13 +103,11 @@ export const Home: React.FC = () => {
                 .filter((_, index) => index < 16)
                 .map((movie) => (
                   <Movie
-                    key={movie.id}
-                    imageUrl={getMovieImage(movie.poster_path)}
-                    onClick={() => handleSelectTitle(movie.id)}
-                  >
-                    <div />
-                    <p>{movie.title}</p>
-                  </Movie>
+                    key={`searched-movie-${movie.id}`}
+                    id={movie.id}
+                    title={movie.title}
+                    imageUrl={movie.poster_path}
+                  />
                 ))}
           </div>
         </MovieList>
@@ -122,13 +115,17 @@ export const Home: React.FC = () => {
       <MovieList>
         <div>
           <h4>Popular Movies</h4>
-          <SeeAllButton>
+          <SeeAllButton
+            onClick={() =>
+              navigate('/movies/list/popular-movies/popularity.desc')
+            }
+          >
             <p>See all</p>
             <ArrowRight weight="bold" />
           </SeeAllButton>
         </div>
         <div>
-          {isPopularSeriesErrored ? (
+          {isPopularVideosErrored ? (
             <ErrorMessage
               message="Sorry for that, please refresh the page"
               className="error-message"
@@ -148,13 +145,11 @@ export const Home: React.FC = () => {
               .filter((_, index) => index < 8)
               .map((movie) => (
                 <Movie
-                  key={movie.id}
-                  imageUrl={getMovieImage(movie.poster_path)}
-                  onClick={() => handleSelectTitle(movie.id)}
-                >
-                  <div />
-                  <p>{movie.title}</p>
-                </Movie>
+                  key={`popular-movies-${movie.id}`}
+                  id={movie.id}
+                  title={movie.title}
+                  imageUrl={movie.poster_path}
+                />
               ))
           )}
         </div>
@@ -163,7 +158,11 @@ export const Home: React.FC = () => {
       <MovieList>
         <div>
           <h4>Latest Movies</h4>
-          <SeeAllButton>
+          <SeeAllButton
+            onClick={() =>
+              navigate('/movies/list/latest-movies/primary_release_date.desc')
+            }
+          >
             <p>See all</p>
             <ArrowRight weight="bold" />
           </SeeAllButton>
@@ -189,13 +188,11 @@ export const Home: React.FC = () => {
               .filter((_, index) => index < 8)
               .map((movie) => (
                 <Movie
-                  key={movie.id}
-                  imageUrl={getMovieImage(movie.poster_path)}
-                  onClick={() => handleSelectTitle(movie.id)}
-                >
-                  <div />
-                  <p>{movie.title}</p>
-                </Movie>
+                  key={`latest-movies-${movie.id}`}
+                  id={movie.id}
+                  title={movie.title}
+                  imageUrl={movie.poster_path}
+                />
               ))
           )}
         </div>
@@ -204,7 +201,11 @@ export const Home: React.FC = () => {
       <MovieList>
         <div>
           <h4>Popular Series</h4>
-          <SeeAllButton>
+          <SeeAllButton
+            onClick={() =>
+              navigate('/series/list/popular-series/popularity.desc')
+            }
+          >
             <p>See all</p>
             <ArrowRight weight="bold" />
           </SeeAllButton>
@@ -219,7 +220,7 @@ export const Home: React.FC = () => {
             <>
               {Array.from({ length: 8 }).map((_, index) => (
                 <Loading
-                  key={`loading-latest-videos-${index + 1}`}
+                  key={`popular-series-${index + 1}`}
                   style={{ width: 214, height: 290, borderRadius: 3 }}
                 />
               ))}
@@ -228,15 +229,13 @@ export const Home: React.FC = () => {
             popularSeries &&
             popularSeries.results
               .filter((_, index) => index < 8)
-              .map((movie) => (
+              .map((serie) => (
                 <Movie
-                  key={movie.id}
-                  imageUrl={getMovieImage(movie.poster_path)}
-                  onClick={() => handleSelectTitle(movie.id)}
-                >
-                  <div />
-                  <p>{movie.title}</p>
-                </Movie>
+                  key={`popular-series-${serie.id}`}
+                  id={serie.id}
+                  title={serie.title}
+                  imageUrl={serie.poster_path}
+                />
               ))
           )}
         </div>

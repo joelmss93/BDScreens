@@ -22,7 +22,7 @@ export const MovieList = styled.section`
   h4 {
     font-size: 32px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 40px;
     letter-spacing: -0.448px;
     text-transform: capitalize;

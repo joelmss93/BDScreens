@@ -8,27 +8,26 @@ import { MoviesData, Movie } from '../../types'
 import { ErrorMessage } from '../../components/Error'
 import { Loading } from '../../components/Loading'
 import { Movie as MovieComponent } from '../../components/Movie'
+import { concatMovieList } from '../../utils/concatMovieList'
 
 export const Lists: React.FC = () => {
   const { prefix, sortBy } = useParams()
   const { pathname } = useLocation()
-  const queryStart = pathname.includes('/movies') ? 'movie' : 'tv'
+  const category = pathname.includes('/movies') ? 'movie' : 'tv'
   const containerRef: RefObject<HTMLDivElement> = useRef(null)
 
   const [page, setPage] = useState(1)
   const [movieList, setMovieList] = useState<Movie[]>()
 
-  console.log(queryStart)
-
   const {
-    // data: listData,
+    data: listData,
     isLoading,
-    // isFetching,
+    isFetching,
     isError,
   } = useQuery(
-    ['lists', queryStart, sortBy, page],
+    ['lists', category, sortBy, page],
     async () => {
-      const { data } = await api.get<MoviesData>(`/discover/${queryStart}`, {
+      const { data } = await api.get<MoviesData>(`/discover/${category}`, {
         params: {
           sort_by: sortBy,
           page,
@@ -39,22 +38,20 @@ export const Lists: React.FC = () => {
       return data
     },
     {
-      onSuccess: (data) =>
-        movieList
-          ? setMovieList((oldData) => oldData && [...oldData, ...data.results])
-          : setMovieList(data.results),
       staleTime: 1000 * 60 * 5,
-      enabled: !!queryStart && !!sortBy && !!page,
+      enabled: !!category && !!sortBy && !!page,
     },
   )
 
-  // useEffect(() => {
-  //   if (movieList?.length && listData) {
-  //     setMovieList((oldData) => oldData && [...oldData, ...listData.results])
-  //   } else if (!movieList?.length && listData) {
-  //     setMovieList(listData.results)
-  //   }
-  // }, [listData, movieList?.length])
+  useEffect(() => {
+    if (movieList?.length && listData) {
+      setMovieList(
+        (oldData) => oldData && concatMovieList(oldData, listData.results),
+      )
+    } else if (!movieList?.length && listData) {
+      setMovieList(listData.results)
+    }
+  }, [listData, movieList?.length])
 
   const handleScroll = () => {
     if (containerRef.current) {
@@ -79,7 +76,7 @@ export const Lists: React.FC = () => {
       <MovieList>
         <h4>{prefix && prefix.replaceAll('-', ' ')}</h4>
         <div>
-          {isError ? (
+          {isError && !movieList ? (
             <ErrorMessage
               message="Something went wrong, please refresh the page"
               className="error-message"
@@ -103,6 +100,22 @@ export const Lists: React.FC = () => {
                 imageUrl={movie.poster_path}
               />
             ))
+          )}
+
+          {(isLoading || isFetching) &&
+            movieList &&
+            Array.from({ length: 6 }).map((_, index) => (
+              <Loading
+                key={`loading-fetch-${index + 1}`}
+                style={{ width: 214, height: 290, borderRadius: 3 }}
+              />
+            ))}
+
+          {(isLoading || isFetching) && isError && movieList && (
+            <ErrorMessage
+              message="Something went wrong, please refresh the page"
+              className="error-message"
+            />
           )}
         </div>
       </MovieList>

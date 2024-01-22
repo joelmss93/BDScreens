@@ -5,6 +5,7 @@ export type Movie = {
   backdrop_path: string
   overview: string
   runtime: number
+  release_date: string
   genres: {
     id: number
     name: string

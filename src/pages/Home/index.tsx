@@ -119,6 +119,7 @@ export const Home: React.FC = () => {
             onClick={() =>
               navigate('/movies/list/popular-movies/popularity.desc')
             }
+            data-testid="see-all-popular-movies"
           >
             <p>See all</p>
             <ArrowRight weight="bold" />
@@ -128,13 +129,15 @@ export const Home: React.FC = () => {
           {isPopularVideosErrored ? (
             <ErrorMessage
               message="Sorry for that, please refresh the page"
+              data-testid="popular-movies-error"
               className="error-message"
             />
           ) : isPopularVideosLoading || isPopularVideosFetching ? (
             <>
               {Array.from({ length: 8 }).map((_, index) => (
                 <Loading
-                  key={`loading-popular-movies${index + 1}`}
+                  key={`loading-popular-movies-${index + 1}`}
+                  data-testid={`loading-popular-movies-${index + 1}`}
                   style={{ width: 214, height: 290, borderRadius: 3 }}
                 />
               ))}
@@ -162,6 +165,7 @@ export const Home: React.FC = () => {
             onClick={() =>
               navigate('/movies/list/latest-movies/primary_release_date.desc')
             }
+            data-testid="see-all-latest-movies"
           >
             <p>See all</p>
             <ArrowRight weight="bold" />
@@ -171,6 +175,7 @@ export const Home: React.FC = () => {
           {isLatestMoviesErrored ? (
             <ErrorMessage
               message="Sorry for that, please refresh the page"
+              data-testid="latest-movies-error"
               className="error-message"
             />
           ) : isLatestMoviesLoading || isLatestMoviesFetching ? (
@@ -178,6 +183,7 @@ export const Home: React.FC = () => {
               {Array.from({ length: 8 }).map((_, index) => (
                 <Loading
                   key={`loading-latest-videos-${index + 1}`}
+                  data-testid={`loading-latest-movies-${index + 1}`}
                   style={{ width: 214, height: 290, borderRadius: 3 }}
                 />
               ))}
@@ -205,6 +211,7 @@ export const Home: React.FC = () => {
             onClick={() =>
               navigate('/series/list/popular-series/popularity.desc')
             }
+            data-testid="see-all-popular-series"
           >
             <p>See all</p>
             <ArrowRight weight="bold" />
@@ -214,13 +221,15 @@ export const Home: React.FC = () => {
           {isPopularSeriesErrored ? (
             <ErrorMessage
               message="Sorry for that, please refresh the page"
+              data-testid="popular-series-error"
               className="error-message"
             />
           ) : isPopularSeriesLoading || isPopularSeriesFetching ? (
             <>
               {Array.from({ length: 8 }).map((_, index) => (
                 <Loading
-                  key={`popular-series-${index + 1}`}
+                  key={`loading-popular-series-${index + 1}`}
+                  data-testid={`loading-popular-series-${index + 1}`}
                   style={{ width: 214, height: 290, borderRadius: 3 }}
                 />
               ))}

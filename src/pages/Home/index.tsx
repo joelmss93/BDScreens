@@ -144,16 +144,14 @@ export const Home: React.FC = () => {
             </>
           ) : (
             popularVideos &&
-            popularVideos.results
-              .filter((_, index) => index < 8)
-              .map((movie) => (
-                <Movie
-                  key={`popular-movies-${movie.id}`}
-                  id={movie.id}
-                  title={movie.title}
-                  imageUrl={movie.poster_path}
-                />
-              ))
+            popularVideos.results.map((movie) => (
+              <Movie
+                key={`popular-movies-${movie.id}`}
+                id={movie.id}
+                title={movie.title}
+                imageUrl={movie.poster_path}
+              />
+            ))
           )}
         </div>
       </MovieList>
@@ -190,16 +188,14 @@ export const Home: React.FC = () => {
             </>
           ) : (
             latestMovies &&
-            latestMovies.results
-              .filter((_, index) => index < 8)
-              .map((movie) => (
-                <Movie
-                  key={`latest-movies-${movie.id}`}
-                  id={movie.id}
-                  title={movie.title}
-                  imageUrl={movie.poster_path}
-                />
-              ))
+            latestMovies.results.map((movie) => (
+              <Movie
+                key={`latest-movies-${movie.id}`}
+                id={movie.id}
+                title={movie.title}
+                imageUrl={movie.poster_path}
+              />
+            ))
           )}
         </div>
       </MovieList>
@@ -236,16 +232,14 @@ export const Home: React.FC = () => {
             </>
           ) : (
             popularSeries &&
-            popularSeries.results
-              .filter((_, index) => index < 8)
-              .map((serie) => (
-                <Movie
-                  key={`popular-series-${serie.id}`}
-                  id={serie.id}
-                  title={serie.title}
-                  imageUrl={serie.poster_path}
-                />
-              ))
+            popularSeries.results.map((serie) => (
+              <Movie
+                key={`popular-series-${serie.id}`}
+                id={serie.id}
+                title={serie.title}
+                imageUrl={serie.poster_path}
+              />
+            ))
           )}
         </div>
       </MovieList>

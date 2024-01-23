@@ -16,7 +16,6 @@ export const Container = styled.div`
 export const MovieList = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 22px;
   padding: 32px;
 
   h4 {
@@ -36,10 +35,19 @@ export const MovieList = styled.section`
 
   > div:last-child {
     display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start !important;
     gap: 16px;
-    max-width: 100vw;
-    flex-wrap: wrap;
+    max-width: 94vw;
+    height: 315px;
     justify-content: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    display: none !important;
   }
 `
 

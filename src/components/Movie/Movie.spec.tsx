@@ -1,5 +1,5 @@
 import { fireEvent, render } from '@testing-library/react'
-import { ReactTestEnvironment } from '../../Fakes/ReactEnvironment'
+import { ReactTestEnvironment } from '../../__Mocks__/ReactEnvironment'
 import { Movie } from '.'
 
 jest.spyOn(console, 'error')

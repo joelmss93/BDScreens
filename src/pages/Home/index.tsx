@@ -89,7 +89,7 @@ export const Home: React.FC = () => {
     <Container>
       <Banner />
       {query && moviesSearched && (
-        <MovieList>
+        <MovieList data-testid="movies-searched">
           <div>
             <h4>Your Search Result for: {query}</h4>
             <SeeAllButton>

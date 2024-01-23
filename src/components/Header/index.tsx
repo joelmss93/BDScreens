@@ -39,6 +39,7 @@ export const Header: React.FC = () => {
         <Search
           value={query}
           onChange={(event) => handleSearch(event.target.value)}
+          data-testid="search-movies-input"
         />
         <Button text="Sign In" />
       </ActionsContainer>

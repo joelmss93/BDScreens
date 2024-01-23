@@ -1,8 +1,10 @@
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { Home } from '.'
-import { ReactTestEnvironment } from '../../Fakes/ReactEnvironment'
+import { ReactTestEnvironment } from '../../__Mocks__/ReactEnvironment'
 import api from '../../service/api'
 import AxiosMock from 'axios-mock-adapter'
+import { Header } from '../../components/Header'
+import { SearchContextProvider } from '../../contexts/search'
 
 jest.spyOn(console, 'error')
 let mockedPath = ''
@@ -10,9 +12,13 @@ const mockedNavigate = (to: string) => (mockedPath = to)
 jest.mock('react-router-dom', () => ({
   ...(jest.requireActual('react-router-dom') as any),
   useNavigate: () => mockedNavigate,
+  useLocation: () => ({
+    pathname: mockedPath,
+  }),
 }))
 jest.mock('../../assets/banner.png', () => '')
 jest.mock('../../assets/popcorn-sad.png', () => '')
+jest.mock('../../assets/logo.svg', () => '')
 
 const moviesResponse = {
   results: [
@@ -159,5 +165,35 @@ describe('Home page tests', () => {
     fireEvent.click(getByTestId('see-all-popular-series'))
 
     expect(mockedPath).toBe('/series/list/popular-series/popularity.desc')
+  })
+
+  it('should be able to search movies', async () => {
+    apiMock.reset()
+    apiMock.onGet('/search/movie').reply(200, moviesResponse)
+
+    const { getByTestId } = render(
+      <ReactTestEnvironment>
+        <SearchContextProvider>
+          <Header />
+          <Home />
+        </SearchContextProvider>
+      </ReactTestEnvironment>,
+    )
+
+    act(() => {
+      fireEvent.click(getByTestId('search-clickable'))
+      fireEvent.change(getByTestId('search-movies-input'), {
+        target: { value: 'test' },
+      })
+    })
+
+    await waitFor(
+      () => {
+        expect(getByTestId('movies-searched'))
+      },
+      {
+        timeout: 3000,
+      },
+    )
   })
 })

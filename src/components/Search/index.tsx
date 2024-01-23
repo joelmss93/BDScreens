@@ -29,6 +29,7 @@ export const Search: React.FC<SearchProps> = ({ value, ...rest }) => {
       <Container
         onClick={handleEnableSearch}
         focused={searchFocused || !!value}
+        data-testid="search-clickable"
       >
         <MagnifyingGlass />
         <input value={value} {...rest} id="search-input" />

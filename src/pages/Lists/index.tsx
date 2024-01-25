@@ -1,14 +1,13 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react'
+import React, { RefObject, useEffect, useRef } from 'react'
 
 import { Container, MovieList } from './styles'
 import { useLocation, useParams } from 'react-router-dom'
-import { useQuery } from 'react-query'
+import { useInfiniteQuery } from 'react-query'
 import api from '../../service/api'
-import { MoviesData, Movie } from '../../types'
+import { MoviesData } from '../../types'
 import { ErrorMessage } from '../../components/Error'
 import { Loading } from '../../components/Loading'
 import { Movie as MovieComponent } from '../../components/Movie'
-import { concatMovieList } from '../../utils/concatMovieList'
 
 export const Lists: React.FC = () => {
   const { prefix, sortBy } = useParams()
@@ -16,21 +15,19 @@ export const Lists: React.FC = () => {
   const category = pathname.includes('/movies') ? 'movie' : 'tv'
   const containerRef: RefObject<HTMLDivElement> = useRef(null)
 
-  const [page, setPage] = useState(1)
-  const [movieList, setMovieList] = useState<Movie[]>()
-
   const {
-    data: listData,
+    data: moviesList,
     isLoading,
-    isFetching,
     isError,
-  } = useQuery(
-    ['lists', category, sortBy, page],
-    async () => {
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    ['lists', category, sortBy],
+    async ({ pageParam = 1 }) => {
       const { data } = await api.get<MoviesData>(`/discover/${category}`, {
         params: {
           sort_by: sortBy,
-          page,
+          page: pageParam,
           language: 'en-US',
         },
       })
@@ -38,28 +35,20 @@ export const Lists: React.FC = () => {
       return data
     },
     {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.page < lastPage.total_pages) return lastPage.page + 1
+        else return undefined
+      },
       staleTime: 1000 * 60 * 5,
-      enabled: !!category && !!sortBy && !!page,
+      enabled: !!category && !!sortBy,
     },
   )
-
-  useEffect(() => {
-    if (movieList?.length && listData) {
-      setMovieList(
-        (oldData) => oldData && concatMovieList(oldData, listData.results),
-      )
-    } else if (!movieList?.length && listData) {
-      setMovieList(listData.results)
-    }
-  }, [listData, movieList?.length])
 
   const handleScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement
 
-      if (scrollTop + clientHeight >= scrollHeight * 0.8) {
-        setPage((prevPage) => prevPage + 1)
-      }
+      if (scrollTop + clientHeight >= scrollHeight * 0.8) fetchNextPage()
     }
   }
 
@@ -76,12 +65,12 @@ export const Lists: React.FC = () => {
       <MovieList>
         <h4>{prefix && prefix.replaceAll('-', ' ')}</h4>
         <div>
-          {isError && !movieList ? (
+          {isError && !moviesList ? (
             <ErrorMessage
               message="Something went wrong, please refresh the page"
               className="error-message"
             />
-          ) : isLoading && !movieList ? (
+          ) : isLoading && !moviesList ? (
             <>
               {Array.from({ length: 20 }).map((_, index) => (
                 <Loading
@@ -91,19 +80,20 @@ export const Lists: React.FC = () => {
               ))}
             </>
           ) : (
-            movieList &&
-            movieList.map((movie) => (
-              <MovieComponent
-                key={movie.id}
-                id={movie.id}
-                title={movie.title}
-                imageUrl={movie.poster_path}
-              />
-            ))
+            moviesList &&
+            moviesList.pages.flatMap((data) =>
+              data.results.map((movie) => (
+                <MovieComponent
+                  key={movie.id}
+                  id={movie.id}
+                  title={movie.title}
+                  imageUrl={movie.poster_path}
+                />
+              )),
+            )
           )}
 
-          {(isLoading || isFetching) &&
-            movieList &&
+          {isFetchingNextPage &&
             Array.from({ length: 6 }).map((_, index) => (
               <Loading
                 key={`loading-fetch-${index + 1}`}
@@ -111,7 +101,7 @@ export const Lists: React.FC = () => {
               />
             ))}
 
-          {(isLoading || isFetching) && isError && movieList && (
+          {isError && moviesList && (
             <ErrorMessage
               message="Something went wrong, please refresh the page"
               className="error-message"

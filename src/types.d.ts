@@ -10,6 +10,8 @@ export type Movie = {
     id: number
     name: string
   }[]
+  vote_average: number
+  vote_count: number
 }
 
 export interface MoviesData {
@@ -17,4 +19,14 @@ export interface MoviesData {
   page: number
   total_pages: number
   total_results: number
+}
+
+export interface CreditsData {
+  id: number
+  cast: {
+    id: number
+    name: string
+    profile_path: string
+    character: string
+  }[]
 }

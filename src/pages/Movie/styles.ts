@@ -168,13 +168,14 @@ export const CastList = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 1312px;
+    width: 1392px;
   }
 
   > div:last-child {
     display: flex;
     gap: 16px;
-    max-width: 1400px;
+    width: 1392px;
+
     flex-wrap: wrap;
     justify-content: center;
   }

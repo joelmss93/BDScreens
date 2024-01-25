@@ -24,11 +24,9 @@ export const MovieInfo: React.FC = () => {
 
   const [seeAllArtists, setSeeAllArtists] = useState(false)
 
-  const {
-    data: movieData,
-    isLoading: isMovieLoading,
-    isError: isMovieErrored,
-  } = useQuery<Movie | undefined>(
+  const { data: movieData, isLoading: isMovieLoading } = useQuery<
+    Movie | undefined
+  >(
     ['movie', id],
     async () => {
       const { data } = await api.get<Movie>(`/movie/${id}`)
@@ -72,23 +70,45 @@ export const MovieInfo: React.FC = () => {
 
         <div />
       </MovieBackdrop>
-      {movieData && (
+      {isMovieLoading ? (
         <MovieInfoContainer>
           <div>
-            <h5>{movieData?.title}</h5>
-            <span>{getMovieTime(movieData?.runtime)}</span>
+            <h5>
+              <Loading style={{ width: '200px', height: '48px' }} />
+            </h5>
+            <span>
+              <Loading style={{ width: '100px', height: '24px' }} />
+            </span>
             <p>
-              {movieData.genres.map(
-                (genre, index) =>
-                  `${genre.name}${
-                    index + 1 < movieData.genres.length ? ', ' : '.'
-                  }`,
-              )}
+              <Loading style={{ width: '150px', height: '20px' }} />
             </p>
-            <h4>Description</h4>
-            <p>{movieData?.overview}</p>
+            <h4>
+              <Loading style={{ width: '200px', height: '24px' }} />
+            </h4>
+            <p>
+              <Loading style={{ width: '200px', height: '40px' }} />
+            </p>
           </div>
         </MovieInfoContainer>
+      ) : (
+        movieData && (
+          <MovieInfoContainer>
+            <div>
+              <h5>{movieData?.title}</h5>
+              <span>{getMovieTime(movieData?.runtime)}</span>
+              <p>
+                {movieData.genres.map(
+                  (genre, index) =>
+                    `${genre.name}${
+                      index + 1 < movieData.genres.length ? ', ' : '.'
+                    }`,
+                )}
+              </p>
+              <h4>Description</h4>
+              <p>{movieData?.overview}</p>
+            </div>
+          </MovieInfoContainer>
+        )
       )}
 
       <CastList>

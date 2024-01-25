@@ -94,7 +94,7 @@ export const Lists: React.FC = () => {
           )}
 
           {isFetchingNextPage &&
-            Array.from({ length: 6 }).map((_, index) => (
+            Array.from({ length: 12 }).map((_, index) => (
               <Loading
                 key={`loading-fetch-${index + 1}`}
                 style={{ width: 214, height: 290, borderRadius: 3 }}

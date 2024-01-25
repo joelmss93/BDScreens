@@ -6,4 +6,12 @@ the next steps is make and improve movie & lists visualization and implements i1
 ![2024-01-11 23 56 18 localhost cf6b027e75cf](https://github.com/joelmss93/BD-Screens/assets/33437900/7de4cee3-64c6-4d48-8dd2-af20b78a0c28)
 
 
+# How to use!
+
+Sign in on https://www.themoviedb.org
+get our api key on your profile > configuration > API
+
+Set the api key on .env and run application.
+
+
 

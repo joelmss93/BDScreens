@@ -58,7 +58,7 @@ export const Lists: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  })
 
   return (
     <Container ref={containerRef}>

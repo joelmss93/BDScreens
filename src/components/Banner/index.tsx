@@ -12,10 +12,6 @@ export const Banner: React.FC = () => {
           Enjoy exclusive Music Video popular movies and Live shows. Subscribe
           BD Screen now
         </p>
-        <p>
-          Enjoy exclusive Music Video popular movies and Live shows. Subscribe
-          BD Screen now
-        </p>
       </div>
     </Container>
   )

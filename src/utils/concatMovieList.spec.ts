@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom'
 import { concatMovieList } from './concatMovieList'
-// import { Movie } from '../types'
+import { Movie } from '../types'
 
-const newMovies = [
+const newMovies: Movie[] = [
   {
     id: 111,
     overview: 'Test description 1',
@@ -12,9 +12,11 @@ const newMovies = [
     title: 'The great test',
     genres: [],
     runtime: 180,
+    vote_average: 0,
+    vote_count: 0,
   },
 ]
-const movies2 = [
+const movies2: Movie[] = [
   {
     id: 222,
     overview: 'Test description 2',
@@ -24,6 +26,8 @@ const movies2 = [
     title: 'The poor test',
     genres: [],
     runtime: 180,
+    vote_average: 0,
+    vote_count: 0,
   },
 ]
 

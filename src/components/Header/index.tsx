@@ -15,7 +15,9 @@ export const Header: React.FC = () => {
   return (
     <Container>
       <LinksContainer>
-        <img src={logo} alt="logo" width="170" height="44" />
+        <Link to="/">
+          <img src={logo} alt="logo" width="170" height="44" />
+        </Link>
         <div>
           <Link to="/">
             <PageLink active={pathname === '/'}>

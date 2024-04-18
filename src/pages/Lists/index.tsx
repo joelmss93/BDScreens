@@ -4,7 +4,7 @@ import { Container, MovieList } from './styles'
 import { useLocation, useParams } from 'react-router-dom'
 import { useInfiniteQuery } from 'react-query'
 import api from '../../service/api'
-import { MoviesData } from '../../types'
+import { MoviesData, SeriesData } from '../../types'
 import { ErrorMessage } from '../../components/Error'
 import { Loading } from '../../components/Loading'
 import { Movie as MovieComponent } from '../../components/Movie'
@@ -88,6 +88,7 @@ export const Lists: React.FC = () => {
                   id={movie.id}
                   title={movie.title}
                   imageUrl={movie.poster_path}
+                  type={category}
                 />
               )),
             )

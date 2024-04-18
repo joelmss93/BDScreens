@@ -13,7 +13,7 @@ import api from '../../service/api'
 import { CreditsData, Movie } from '../../types'
 import { getMovieBackdrop, getMovieImage } from '../../utils/getMovieImage'
 import { getMovieTime } from '../../utils/getMovieTime'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { ArrowDown, ArrowUp, Star } from 'phosphor-react'
 import { ErrorMessage } from '../../components/Error'
 import { Loading } from '../../components/Loading'
@@ -21,20 +21,25 @@ import { SeeAllButton } from '../Home/styles'
 
 export const MovieInfo: React.FC = () => {
   const { id } = useParams()
+  const { pathname } = useLocation()
+  const prefix = pathname.includes('/movies') ? 'movie' : 'tv'
 
   const [seeAllArtists, setSeeAllArtists] = useState(false)
 
   const { data: movieData, isLoading: isMovieLoading } = useQuery<
-    Movie | undefined
+    (Movie & { name: string }) | undefined
   >(
     ['movie', id],
     async () => {
-      const { data } = await api.get<Movie>(`/movie/${id}`)
+      const { data } = await api.get<Movie & { name: string }>(
+        `/${prefix}/${id}`,
+      )
 
       return data
     },
     {
       staleTime: 1000 * 60 * 5,
+      enabled: !!prefix,
     },
   )
 
@@ -45,12 +50,13 @@ export const MovieInfo: React.FC = () => {
   } = useQuery(
     ['credits', id],
     async () => {
-      const { data } = await api.get<CreditsData>(`/movie/${id}/credits`)
+      const { data } = await api.get<CreditsData>(`/${prefix}/${id}/credits`)
 
       return data
     },
     {
       staleTime: 1000 * 60 * 5,
+      enabled: !!prefix,
     },
   )
 
@@ -94,8 +100,10 @@ export const MovieInfo: React.FC = () => {
         movieData && (
           <MovieInfoContainer>
             <div>
-              <h5>{movieData?.title}</h5>
-              <span>{getMovieTime(movieData?.runtime)}</span>
+              <h5>{prefix === 'movie' ? movieData?.title : movieData.name}</h5>
+              {prefix === 'movie' && (
+                <span>{getMovieTime(movieData?.runtime)}</span>
+              )}
               <p>
                 {movieData.genres.map(
                   (genre, index) =>

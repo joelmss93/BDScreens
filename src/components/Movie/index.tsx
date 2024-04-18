@@ -8,18 +8,20 @@ interface MovieProps {
   id: number
   imageUrl: string
   title: string
+  type: 'movie' | 'tv'
 }
 
 export const Movie: React.FC<MovieProps> = ({
   id,
   title,
   imageUrl,
+  type,
   ...rest
 }) => {
   const navigate = useNavigate()
 
   const handleSelectTitle = (movieId: number) => {
-    navigate(`/movies/${movieId}`)
+    navigate(`/${type === 'movie' ? 'movies' : 'series'}/${movieId}`)
   }
 
   return (

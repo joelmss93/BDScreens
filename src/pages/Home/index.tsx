@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import { Container, MovieList, SeeAllButton } from './styles'
 import { useQuery } from 'react-query'
 import api from '../../service/api'
-import { MoviesData } from '../../types'
+import { MoviesData, SeriesData } from '../../types'
 import { SearchContext } from '../../contexts/search'
 import { Banner } from '../../components/Banner'
 import { ArrowRight } from 'phosphor-react'
@@ -67,10 +67,10 @@ export const Home: React.FC = () => {
     isLoading: isPopularSeriesLoading,
     isFetching: isPopularSeriesFetching,
     isError: isPopularSeriesErrored,
-  } = useQuery<MoviesData | undefined>(
+  } = useQuery<SeriesData | undefined>(
     ['latest series', 1],
     async () => {
-      const { data } = await api.get<MoviesData>('/discover/tv', {
+      const { data } = await api.get<SeriesData>('/discover/tv', {
         params: {
           sort_by: 'popularity.desc',
           page: 1,
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
         <MovieList data-testid="movies-searched">
           <div>
             <h4>Your Search Result for: {query}</h4>
-            <SeeAllButton>
+            <SeeAllButton onClick={() => navigate(`/movies/search/${query}`)}>
               <p>See all</p>
               <ArrowRight weight="bold" />
             </SeeAllButton>
@@ -107,6 +107,7 @@ export const Home: React.FC = () => {
                     id={movie.id}
                     title={movie.title}
                     imageUrl={movie.poster_path}
+                    type="movie"
                   />
                 ))}
           </div>
@@ -150,6 +151,7 @@ export const Home: React.FC = () => {
                 id={movie.id}
                 title={movie.title}
                 imageUrl={movie.poster_path}
+                type="movie"
               />
             ))
           )}
@@ -194,6 +196,7 @@ export const Home: React.FC = () => {
                 id={movie.id}
                 title={movie.title}
                 imageUrl={movie.poster_path}
+                type="movie"
               />
             ))
           )}
@@ -236,8 +239,9 @@ export const Home: React.FC = () => {
               <Movie
                 key={`popular-series-${serie.id}`}
                 id={serie.id}
-                title={serie.title}
+                title={serie.name}
                 imageUrl={serie.poster_path}
+                type="tv"
               />
             ))
           )}

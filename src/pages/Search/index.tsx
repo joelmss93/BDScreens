@@ -30,12 +30,12 @@ export const Search: React.FC = () => {
         <h4>{`Search results for "${query}" on series:`}</h4>
         <div>
           {seriesSearched &&
-            seriesSearched.results.map((serie) => (
+            seriesSearched.results.map((series) => (
               <MovieComponent
-                key={serie.id}
-                id={serie.id}
-                title={serie.name}
-                imageUrl={serie.poster_path}
+                key={series.id}
+                id={series.id}
+                title={series.name}
+                imageUrl={series.poster_path}
                 type="tv"
               />
             ))}

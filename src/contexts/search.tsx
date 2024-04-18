@@ -6,6 +6,7 @@ import { useQuery } from 'react-query'
 interface SearchContextProps {
   query: string
   moviesSearched: MoviesData | undefined
+  seriesSearched: MoviesData | undefined
   handleSearch(value: string): void
 }
 
@@ -39,6 +40,21 @@ export const SearchContextProvider: React.FC<{
     },
   )
 
+  const { data: seriesSearched } = useQuery(
+    ['series', 'search', 1, searchValue],
+    async () => {
+      const { data } = await api.get<MoviesData>('/search/tv', {
+        params: { query: searchValue },
+      })
+
+      return data
+    },
+    {
+      staleTime: 1000 * 60 * 5,
+      enabled: searchTimer === 0,
+    },
+  )
+
   const handleSearch = (value: string) => {
     setSearchTimer(2000)
     setSearchValue(value)
@@ -46,7 +62,12 @@ export const SearchContextProvider: React.FC<{
 
   return (
     <SearchContext.Provider
-      value={{ query: searchValue, handleSearch, moviesSearched }}
+      value={{
+        query: searchValue,
+        handleSearch,
+        moviesSearched,
+        seriesSearched,
+      }}
     >
       {children}
     </SearchContext.Provider>

@@ -1,12 +1,12 @@
 import { useState, createContext, useEffect } from 'react'
 import api from '../service/api'
-import { MoviesData } from '../types'
+import { MoviesData, SeriesData } from '../types'
 import { useQuery } from 'react-query'
 
 interface SearchContextProps {
   query: string
   moviesSearched: MoviesData | undefined
-  seriesSearched: MoviesData | undefined
+  seriesSearched: SeriesData | undefined
   handleSearch(value: string): void
 }
 
@@ -43,7 +43,7 @@ export const SearchContextProvider: React.FC<{
   const { data: seriesSearched } = useQuery(
     ['series', 'search', 1, searchValue],
     async () => {
-      const { data } = await api.get<MoviesData>('/search/tv', {
+      const { data } = await api.get<SeriesData>('/search/tv', {
         params: { query: searchValue },
       })
 

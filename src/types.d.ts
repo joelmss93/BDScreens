@@ -30,3 +30,28 @@ export interface CreditsData {
     character: string
   }[]
 }
+
+export type Serie = {
+  id: number
+  name: string
+  original_name: string
+  overview: string
+  first_air_date: string
+  vote_average: number
+  vote_count: number
+  poster_path: string
+  backdrop_path: string
+  overview: string
+  runtime: number
+  genres: {
+    id: number
+    name: string
+  }[]
+}
+
+export interface SeriesData {
+  results: Serie[]
+  page: number
+  total_pages: number
+  total_results: number
+}

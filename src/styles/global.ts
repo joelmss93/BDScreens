@@ -25,6 +25,10 @@ export default createGlobalStyle`
     background: none;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   ::-webkit-scrollbar {
     width: 20px;
   }

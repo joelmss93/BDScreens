@@ -7,10 +7,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   return (
-    <SearchContextProvider>
-      <Header />
-      {children}
+    <>
+      <SearchContextProvider>
+        <Header />
+        {children}
+      </SearchContextProvider>
       <Footer />
-    </SearchContextProvider>
+    </>
   )
 }

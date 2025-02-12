@@ -15,7 +15,7 @@ describe('Movie Component Tests', () => {
     expect(
       render(
         <ReactTestEnvironment>
-          <Movie id={1} title="test" imageUrl="testurl.com" />
+          <Movie id={1} title="test" imageUrl="testurl.com" type="movie" />
         </ReactTestEnvironment>,
       ),
     )
@@ -24,7 +24,13 @@ describe('Movie Component Tests', () => {
   it('should display movie title', () => {
     const { getByText } = render(
       <ReactTestEnvironment>
-        <Movie id={1} title="test" imageUrl="testurl.com" data-testid="movie" />
+        <Movie
+          id={1}
+          title="test"
+          imageUrl="testurl.com"
+          data-testid="movie"
+          type="movie"
+        />
       </ReactTestEnvironment>,
     )
 
@@ -34,7 +40,13 @@ describe('Movie Component Tests', () => {
   it('should be able to navigate to a movie when click on it', () => {
     const { getByTestId } = render(
       <ReactTestEnvironment>
-        <Movie id={1} title="test" imageUrl="testurl.com" data-testid="movie" />
+        <Movie
+          id={1}
+          title="test"
+          imageUrl="testurl.com"
+          data-testid="movie"
+          type="movie"
+        />
       </ReactTestEnvironment>,
     )
 

@@ -44,13 +44,7 @@ const moviesResponse = {
 describe('Home page tests', () => {
   const apiMock = new AxiosMock(api)
   it('should render the component', () => {
-    expect(
-      render(
-        <ReactTestEnvironment>
-          <Home />
-        </ReactTestEnvironment>,
-      ),
-    )
+    expect(generateComponent())
   })
 
   it('should render the component and get movies on api', async () => {
@@ -58,11 +52,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(200, moviesResponse)
     apiMock.onGet('/discover/tv').reply(200, moviesResponse)
 
-    render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    generateComponent()
 
     const apiHistory = apiMock.history.get
 
@@ -81,11 +71,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(200, moviesResponse)
     apiMock.onGet('/discover/tv').reply(200, moviesResponse)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     await waitFor(() => {
       expect(getByTestId('loading-popular-movies-1'))
@@ -99,11 +85,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(400)
     apiMock.onGet('/discover/tv').reply(400)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     await waitFor(
       () => {
@@ -122,11 +104,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(200, moviesResponse)
     apiMock.onGet('/discover/tv').reply(200, moviesResponse)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     fireEvent.click(getByTestId('see-all-popular-movies'))
 
@@ -138,11 +116,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(200, moviesResponse)
     apiMock.onGet('/discover/tv').reply(200, moviesResponse)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     fireEvent.click(getByTestId('see-all-latest-movies'))
 
@@ -156,11 +130,7 @@ describe('Home page tests', () => {
     apiMock.onGet('/discover/movie').reply(200, moviesResponse)
     apiMock.onGet('/discover/tv').reply(200, moviesResponse)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <Home />
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     fireEvent.click(getByTestId('see-all-popular-series'))
 
@@ -171,14 +141,7 @@ describe('Home page tests', () => {
     apiMock.reset()
     apiMock.onGet('/search/movie').reply(200, moviesResponse)
 
-    const { getByTestId } = render(
-      <ReactTestEnvironment>
-        <SearchContextProvider>
-          <Header />
-          <Home />
-        </SearchContextProvider>
-      </ReactTestEnvironment>,
-    )
+    const { getByTestId } = generateComponent()
 
     act(() => {
       fireEvent.click(getByTestId('search-clickable'))
@@ -197,3 +160,14 @@ describe('Home page tests', () => {
     )
   })
 })
+
+const generateComponent = () => {
+  return render(
+    <ReactTestEnvironment>
+      <SearchContextProvider>
+        <Header />
+        <Home />
+      </SearchContextProvider>
+    </ReactTestEnvironment>,
+  )
+}

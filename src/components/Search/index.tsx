@@ -24,7 +24,10 @@ export const Search: React.FC<SearchProps> = ({ value, ...rest }) => {
   return (
     <>
       {searchFocused && (
-        <SearchOverlay onClick={() => setSearchFocused(false)} />
+        <SearchOverlay
+          onClick={() => setSearchFocused(false)}
+          data-testid="search-overlay"
+        />
       )}
       <Container
         onClick={handleEnableSearch}
@@ -32,7 +35,12 @@ export const Search: React.FC<SearchProps> = ({ value, ...rest }) => {
         data-testid="search-clickable"
       >
         <MagnifyingGlass />
-        <input value={value} {...rest} id="search-input" />
+        <input
+          value={value}
+          id="search-input"
+          data-testid="search-input"
+          {...rest}
+        />
       </Container>
     </>
   )

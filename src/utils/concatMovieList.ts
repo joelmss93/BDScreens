@@ -4,7 +4,7 @@ export function concatMovieList(
   currentList: Movie[],
   newMovies: Movie[],
 ): Movie[] {
-  if (currentList) {
+  if (currentList.length > 0) {
     const compare = currentList.find((movie) =>
       newMovies.some((newMovie) => movie.id === newMovie.id),
     )
